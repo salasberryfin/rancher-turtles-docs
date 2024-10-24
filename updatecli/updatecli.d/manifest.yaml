@@ -1,0 +1,131 @@
+name: Bump CAPI providers version
+
+# define scm for turtles
+scms:
+  turtles:
+    kind: github
+    spec:
+      user: turtles-bot
+      email: turtles@suse.de
+      owner: salasberryfin
+      repository: rancher-turtles
+      #owner: rancher
+      #repository: turtles
+      token: '{{ requiredEnv "UPDATECLI_GITHUB_TOKEN" }}'
+      username: '{{ requiredEnv "UPDATECLI_GITHUB_ACTOR" }}'
+      branch: main
+  turtles-docs:
+    kind: github
+    spec:
+      user: turtles-bot
+      email: turtles@suse.de
+      owner: salasberryfin
+      repository: rancher-turtles-docs
+      #owner: rancher
+      #repository: turtles-docs
+      token: '{{ requiredEnv "UPDATECLI_GITHUB_TOKEN" }}'
+      username: '{{ requiredEnv "UPDATECLI_GITHUB_ACTOR" }}'
+      commitusingapi: true
+      commitmessage:
+        type: "chore"
+      branch: main
+
+# retrieve latest turtles release
+sources:
+  turtlesRelease:
+    kind: githubrelease
+    name: Get the latest Turtles release
+    spec:
+      owner: salasberryfin
+      repository: rancher-turtles
+      #owner: rancher
+      #repository: turtles
+      token: '{{ requiredEnv "UPDATECLI_GITHUB_TOKEN" }}'
+      username: '{{ requiredEnv "UPDATECLI_GITHUB_ACTOR" }}'
+      typeFilter:
+        latest: true
+  capiOperatorVersion:
+    kind: golang/gomod
+    name: Get CAPI operator version used in Turtles
+    scmid: turtles
+    spec:
+      module: sigs.k8s.io/cluster-api-operator
+  capiVersion:
+    kind: golang/gomod
+    name: Get core CAPI version used in Turtles
+    scmid: turtles
+    spec:
+      module: sigs.k8s.io/cluster-api
+
+# update docs accordingly
+targets:
+  bumpCapiOperatorInstallGuide:
+    name: "bump turtles version"
+    kind: file
+    sourceid: turtlesRelease
+    spec:
+      files:
+        - ./docs/developer-guide/install_capi_operator.md
+        - ./docs/getting-started/install-rancher-turtles/using_helm.md
+      matchpattern: 'helm install rancher-turtles turtles/rancher-turtles --version (.*)'
+      replacepattern: 'helm install rancher-turtles turtles/rancher-turtles --version {{ source "turtlesRelease" }}'
+    scmid: turtles-docs
+  bumpCoreCapiInstallGuide:
+    name: "bump core capi version"
+    kind: file
+    sourceid: capiVersion
+    spec:
+      files:
+        - ./docs/developer-guide/install_capi_operator.md
+      matchpattern: 'cluster-api:(.*?)'
+      replacepattern: 'cluster-api:{{ source `capiVersion` }}'
+    scmid: turtles-docs
+  bumpCapdInstallGuide:
+    name: "bump turtles version"
+    kind: file
+    sourceid: capiVersion
+    spec:
+      files:
+        - ./docs/developer-guide/install_capi_operator.md
+      matchpattern: 'docker:(.*?)'
+      replacepattern: 'docker:{{ source `capiVersion` }}'
+    scmid: turtles-docs
+  bumpGettingStartedIntroductionTurtles:
+    name: "bump turtles prerequisite"
+    kind: file
+    sourceid: turtlesRelease
+    spec:
+      file: ./docs/getting-started/intro.md
+      matchpattern: 'Rancher Turtles\s+\|\s+`>(.*)`\s+\|'
+      replacepattern: 'Rancher Turtles | `>{{ source "turtlesRelease" }}` |'
+    scmid: turtles-docs
+  bumpGettingStartedIntroductionCapi:
+    name: "bump core capi prerequisite"
+    kind: file
+    sourceid: capiVersion
+    spec:
+      file: ./docs/getting-started/intro.md
+      matchpattern: 'Cluster API\s+\|\s+`(.*)`\s+\|'
+      replacepattern: 'Cluster API | `{{ source "capiVersion" }}` |'
+    scmid: turtles-docs
+  bumpGettingStartedIntroductionCapiOperator:
+    name: "bump capi operator prerequisite"
+    kind: file
+    sourceid: capiOperatorVersion
+    spec:
+      file: ./docs/getting-started/intro.md
+      matchpattern: 'Cluster API Operator\s+\|\s+`>=(.*)`\s+\|'
+      replacepattern: 'Cluster API Operator | `>={{ source "capiOperatorVersion" }}` |'
+    scmid: turtles-docs
+
+# create a pr with the changes
+actions:
+  default:
+    title: '[updatecli] Prepare documentation for new release'
+    kind: github/pullrequest
+    scmid: turtles-docs
+    spec:
+      automerge: false
+      mergemethod: squash
+      labels:
+        - area/documentation
