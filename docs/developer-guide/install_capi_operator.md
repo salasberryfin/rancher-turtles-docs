@@ -36,7 +36,7 @@ helm install cert-manager jetstack/cert-manager --namespace cert-manager --creat
 helm install capi-operator capi-operator/cluster-api-operator
 	--create-namespace -n capi-operator-system
 	--set infrastructure=docker:v1.7.3
-	--set core=cluster-api:v1.7.3
+	--set core=cluster-api:v1.7.7v1.7.3
 	--timeout 90s --wait # Core Cluster API with kubeadm bootstrap and control plane providers will also be installed
 ```
 
@@ -50,7 +50,7 @@ To provide additional environment variables, enable feature gates, or supply clo
 helm install capi-operator capi-operator/cluster-api-operator
 	--create-namespace -n capi-operator-system
 	--set infrastructure=docker:v1.7.3
-	--set core=cluster-api:v1.7.3
+	--set core=cluster-api:v1.7.7v1.7.3
 	--timeout 90s
 	--secret-name <secret_name>
 	--wait
