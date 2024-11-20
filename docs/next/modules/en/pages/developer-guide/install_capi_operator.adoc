@@ -65,7 +65,7 @@ helm install capi-operator capi-operator/cluster-api-operator
 	--set infrastructure=docker:v1.7.7
 	--set core=cluster-api:v1.7.7
 	--timeout 90s
-	--secret-name <secret_name>
+	--set secret-name=<secret_name>
 	--wait
 ----
 
