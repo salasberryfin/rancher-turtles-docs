@@ -1,0 +1,16 @@
+changelogs:
+  - kind: github
+    dir: docs/next/modules/en/pages/changelogs
+    formats:
+      - extension: asciidoc
+        frontmatters: |
+          ---
+          title: "{{ .Changelog.Name }}"
+          date: "{{ .Changelog.PublishedAt }}"
+          ---
+        indexfilename: index
+        indexfrontmatters: |
+          = Release Notes
+    spec:
+      owner: rancher
+      repository: turtles
