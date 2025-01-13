@@ -1,0 +1,20 @@
+changelogs:
+  - kind: github
+    dir: docs/v-0.15/modules/en/pages/changelogs
+    formats:
+      - extension: asciidoc
+        frontmatters: |
+          ---
+          title: "{{ .Changelog.Name }}"
+          date: "{{ .Changelog.PublishedAt }}"
+          ---
+        indexfilename: index
+        indexfrontmatters: |
+          ---
+          title: "0.15 Changelogs"
+          ---
+    spec:
+      owner: salasberryfin
+      #owner: rancher
+      repository: rancher-turtles
+      #repository: turtles
