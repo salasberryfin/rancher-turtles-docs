@@ -1,0 +1,38 @@
+---
+title: "v0.15.0"
+date: "2025-01-14 08:48:27 +0000 UTC"
+---
+
+// Disclaimer: this file is generated, do not edit it manually.
+
+
+__Carlos Salas (salasberryfin) released this 2025-01-14 08:48:27 +0000 UTC - v0.15.0__
+
+
+=== Description
+
+---
+
+++++
+
+<h1>Release notes</h1>
+<p>These are sample release notes to test <code>releasepost</code></p>
+<p>✨ features</p>
+<ul>
+<li>feat1</li>
+<li>feat2</li>
+</ul>
+<p>🐛 Fixes</p>
+<ul>
+<li>fix1</li>
+</ul>
+
+++++
+
+---
+
+
+---
+
+__Information retrieved from link:https://github.com/salasberryfin/rancher-turtles/releases/tag/v0.15.0[here]__
+
