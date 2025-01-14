@@ -1,0 +1,14 @@
+---
+title: "Changelogs"
+---
+
+// Disclaimer: this file is generated, do not edit it manually.
+[cols="1,1,1" options="header" frame="ends" grid="rows"]
+|===
+| Name | Author | Published Time
+
+| link:changelogs/v0.15.0[v0.15.0(latest)] | Carlos Salas (salasberryfin) | 2025-01-14 08:48:27 +0000 UTC
+
+| link:changelogs/v0.1.0-salasberryfin[v0.1.0-salasberryfin] | Carlos Salas (salasberryfin) | 2023-09-29 15:07:46 +0000 UTC
+
+|===
