@@ -1,5 +1,45 @@
-= Create a cluster using Fleet
-:sidebar_position: 2
+= ClusterClass
+
+In this section we cover using *ClusterClass* with {product_name}.
+
+[CAUTION]
+====
+ClusterClass is an experimental feature of Cluster API. As with any experimental features it should be used with caution as it may be unreliable. All experimental features are not subject to any compatibility or deprecation promise.
+====
+
+[TIP]
+====
+Before using ClusterClass, study the provider docs and confirm that the feature is supported. This documentation includes a matrix in the xref:./certified.adoc[Certified providers] section with xref:./certified.adoc#_clusterclass_support_for_certified_providers[cluster topology support status].
+====
+
+== Enable ClusterClass
+
+To use ClusterClass it needs to be enabled for core Cluster API and any provider that supports it. This is done by setting the `CLUSTER_TOPOLOGY` variable to `true`.
+
+The {product_name} Helm chart will automatically enable the feature when installing CAPI. However, when enabling additional providers, ensure `CLUSTER_TOPOLOGY` is set in the provider configuration. Turtles' xref:../user/capiprovider.adoc[CAPIProvider] resource supports passing installation parameters to the provider via `variables` as follows:
+
+[source,yaml]
+----
+apiVersion: turtles-capi.cattle.io/v1alpha1
+kind: CAPIProvider
+metadata:
+  name: azure
+  namespace: capz-system
+spec:
+  type: infrastructure
+  name: azure
+  configSecret:
+    name: azure-variables
+  variables:
+    CLUSTER_TOPOLOGY: "true"
+    EXP_CLUSTER_RESOURCE_SET: "true"
+    EXP_MACHINE_POOL: "true"
+    EXP_AKS_RESOURCE_HEALTH: "true"
+----
+
+The resource defined in this yaml file will install CAPZ with support for a number of features, including `CLUSTER_TOPOLOGY`.
+
+== Create a cluster using Fleet
 
 This section will guide you through creating a cluster that utilizes ClusterClass using a GitOps workflow with Fleet.
 
@@ -13,7 +53,7 @@ This guide uses the https://github.com/rancher-sandbox/rancher-turtles-fleet-exa
 
 * Rancher Manager cluster with {product_name} installed
 * Cluster API providers installed for your scenario - we'll be using the Docker infrastructure and Kubeadm bootstrap/control plane providers in these instructions - see https://cluster-api.sigs.k8s.io/user/quick-start.html#initialization-for-common-providers[Initialization for common providers]
-* The *ClusterClass* feature enabled - see xref:./intro.adoc[the introduction]
+* The *ClusterClass* feature enabled - see xref:./clusterclass.adoc#_enable_clusterclass[Enable ClusterClass]
 
 == Configure Rancher Manager
 
